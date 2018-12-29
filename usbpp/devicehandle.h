@@ -68,6 +68,21 @@ class DeviceHandle
         void setConfiguration(int newConfiguration);
 
         /**
+         * @brief Detaches the kernel driver
+         *
+         * If successful, you will then be able to claim the interface and perform I/O.
+         *
+         * This functionality is not available on Darwin or Windows.
+         *
+         * Note that libusb itself also talks to the device through a special kernel driver, if this
+         * driver is already attached to the device, this call will not detach it and return
+         * \c LIBUSB_ERROR_NOT_FOUND.
+         *
+         * \param[in] interfaceNumber the interface to detach the driver from
+         */
+        void detachKernelDriver(int interfaceNumber);
+
+        /**
          * @brief Claims an interface
          *
          * @param[in] interfaceNumber the interface to claim

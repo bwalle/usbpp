@@ -62,6 +62,13 @@ void DeviceHandle::setConfiguration(int newConfiguration)
         throw Error(usb_strerror());
 }
 
+void DeviceHandle::detachKernelDriver(int interfaceNumber)
+{
+    int err = usb_detach_kernel_driver(m_data->device_handle, interfaceNumber);
+    if (err != 0)
+        throw Error(errorcodeToString(err));
+}
+
 void DeviceHandle::claimInterface(int interfaceNumber)
 {
     int err = usb_claim_interface(m_data->device_handle, interfaceNumber);

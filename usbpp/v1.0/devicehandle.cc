@@ -76,6 +76,13 @@ void DeviceHandle::claimInterface(int interfaceNumber)
     m_data->claimed_interfaces.push_back(interfaceNumber);
 }
 
+void DeviceHandle::detachKernelDriver(int interfaceNumber)
+{
+    int err = libusb_detach_kernel_driver(m_data->device_handle, interfaceNumber);
+    if (err != 0)
+        throw Error(errorcodeToString(err), err);
+}
+
 void DeviceHandle::releaseInterface(int interfaceNumber)
 {
     int err = libusb_release_interface(m_data->device_handle, interfaceNumber);
