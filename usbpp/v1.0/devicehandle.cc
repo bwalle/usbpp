@@ -106,7 +106,7 @@ void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
 {
     int err = libusb_control_transfer(m_data->device_handle, bmRequestType, bRequest,
                                       wValue, wIndex, data, wLength, timeout);
-    if (err != 0)
+    if (err < 0)
         throw Error(errorcodeToString(err));
 }
 
