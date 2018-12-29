@@ -60,7 +60,7 @@ DeviceDescriptor Device::getDescriptor() const
     struct libusb_device_descriptor usbDescriptor;
     int err = libusb_get_device_descriptor(m_data->device, &usbDescriptor);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     ret.setDeviceClass(usbDescriptor.bDeviceClass);
     ret.setDeviceSubclass(usbDescriptor.bDeviceSubClass);
@@ -76,7 +76,7 @@ ConfigDescriptor *Device::getConfigDescriptor(int index)
     struct libusb_config_descriptor *usb_config_descriptor;
     int err = libusb_get_config_descriptor(m_data->device, index, &usb_config_descriptor);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     return new ConfigDescriptor(usb_config_descriptor);
 }
@@ -86,7 +86,7 @@ DeviceHandle *Device::open()
     libusb_device_handle *handle;
     int err = libusb_open(m_data->device, &handle);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     return new DeviceHandle(handle);
 }

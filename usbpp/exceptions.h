@@ -48,8 +48,15 @@ public:
      *
      * @param[in] string the error string
      */
-    Error(const std::string& string)
-        : std::runtime_error(string) {}
+    Error(const std::string& string, int code=0)
+        : std::runtime_error(string), m_code(code) {}
+
+    int code() const {
+        return m_code;
+    }
+
+private:
+    int m_code;
 };
 
 /* }}} */

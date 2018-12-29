@@ -55,7 +55,7 @@ int DeviceHandle::getConfiguration() const
     int configuration;
     int err = libusb_get_configuration(m_data->device_handle, &configuration);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     return configuration;
 }
@@ -64,14 +64,14 @@ void DeviceHandle::setConfiguration(int newConfiguration)
 {
     int err = libusb_set_configuration(m_data->device_handle, newConfiguration);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 }
 
 void DeviceHandle::claimInterface(int interfaceNumber)
 {
     int err = libusb_claim_interface(m_data->device_handle, interfaceNumber);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     m_data->claimed_interfaces.push_back(interfaceNumber);
 }
@@ -80,7 +80,7 @@ void DeviceHandle::releaseInterface(int interfaceNumber)
 {
     int err = libusb_release_interface(m_data->device_handle, interfaceNumber);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     std::list<int>::iterator result = std::find(m_data->claimed_interfaces.begin(),
                                                 m_data->claimed_interfaces.end(),
@@ -93,7 +93,7 @@ void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSett
 {
     int err =libusb_set_interface_alt_setting(m_data->device_handle, interfaceNumber, alternateSetting);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 }
 
 void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
@@ -107,7 +107,7 @@ void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
     int err = libusb_control_transfer(m_data->device_handle, bmRequestType, bRequest,
                                       wValue, wIndex, data, wLength, timeout);
     if (err < 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 }
 
 void DeviceHandle::bulkTransfer(unsigned char     endpoint,
@@ -123,14 +123,14 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
     int err = libusb_bulk_transfer(m_data->device_handle, endpoint, data, length,
                                    transferred, timeout);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 }
 
 void DeviceHandle::resetDevice()
 {
     int err = libusb_reset_device(m_data->device_handle);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 }
 
 /* }}} */

@@ -43,7 +43,7 @@ UsbManager::UsbManager()
 {
     int err = libusb_init(&m_data->context);
     if (err != 0)
-        throw Error(errorcodeToString(err));
+        throw Error(errorcodeToString(err), err);
 
     m_data->devicelist = NULL;
     m_data->device_number = 0;
